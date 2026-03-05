@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как списать товары на OZON через «Мой склад»</title>
+    <!-- Подключение Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* БУКВИЦА BRAND STYLES v3.0 */
+        :root {
+            /* Palette */
+            --dark: #101827;       /* Заголовки */
+            --grey: #6B7280;       /* Текст */
+            --pink: #FA2F6B;       /* Акцент 1 */
+            --blue: #2463EB;       /* Акцент 2 */
+            --sky: #6AC2EA;        /* Доп. акцент */
+            --bg-body: #F9FAFB;    /* Фон */
+            --bg-card: #FFFFFF;    /* Плашки */
+            
+            /* Backgrounds for boxes */
+            --bg-blue-muted: #C9D7F5; 
+            --bg-pink-muted: #F9CCDB;
+            
+            /* Styles */
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --radius: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background: var(--bg-body); 
+            color: var(--grey); 
+            line-height: 1.65; 
+            padding: 24px 16px; 
+            font-weight: 400;
+        }
+        
+        strong { color: var(--dark); font-weight: 700; }
+        
+        .container { max-width: 760px; margin: 0 auto; }
+
+        /* HEADER */
+        .header { 
+            background: var(--bg-card); 
+            border-radius: var(--radius); 
+            padding: 40px; 
+            margin-bottom: 32px; 
+            box-shadow: var(--shadow); 
+            border-top: 6px solid var(--blue);
+            text-align: center;
+        }
+        .header-pre { color: var(--sky); text-transform: uppercase; font-size: 13px; font-weight: 700; letter-spacing: 1px; margin-bottom: 12px; }
+        .header-title { font-size: 32px; line-height: 1.2; color: var(--dark); font-weight: 700; margin-bottom: 16px; }
+        .header-sub { font-size: 18px; color: var(--grey); font-weight: 400; }
+        
+        .tags { display: flex; justify-content: center; gap: 8px; margin-top: 24px; flex-wrap: wrap; }
+        .tag { background: #EEF4FF; color: var(--blue); padding: 4px 12px; border-radius: 100px; font-size: 13px; font-weight: 500; }
+
+        /* SECTIONS */
+        .section { 
+            background: var(--bg-card); 
+            border-radius: var(--radius); 
+            margin-bottom: 20px; 
+            box-shadow: var(--shadow); 
+            overflow: hidden; 
+            transition: transform 0.2s ease;
+        }
+        .section:hover { transform: translateY(-2px); }
+        
+        .section-header { 
+            padding: 24px; 
+            display: flex; 
+            align-items: center; 
+            cursor: pointer; 
+            border-bottom: 1px solid transparent; /* reserve space */
+        }
+        .section.collapsed .section-header { border-bottom: none; }
+        
+        .section-icon { 
+            width: 44px; height: 44px; 
+            background: #EEF4FF; 
+            color: var(--dark); 
+            border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 22px; 
+            margin-right: 16px; 
+            flex-shrink: 0; 
+        }
+        
+        .section-title { font-size: 20px; font-weight: 700; color: var(--dark); flex: 1; margin: 0; }
+        .section-toggle { 
+            width: 24px; height: 24px; 
+            display: flex; align-items: center; justify-content: center; 
+            color: var(--grey); 
+            transition: transform 0.3s ease; 
+        }
+        .section.collapsed .section-toggle { transform: rotate(-90deg); }
+
+        .section-content { 
+            padding: 0 24px 32px 24px; 
+            color: var(--grey); 
+            font-size: 16px;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        .section.collapsed .section-content { max-height: 0 !important; padding-bottom: 0; }
+        
+        /* CONTENT BLOCKS */
+        p { margin-bottom: 16px; }
+        ul, ol { margin-bottom: 24px; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+
+        /* The "Pink" Box - for Warnings, Emphasis, Important */
+        .box-pink { 
+            background: var(--bg-pink-muted); 
+            padding: 24px; 
+            border-radius: 12px; 
+            margin: 24px 0; 
+            border-left: 4px solid var(--pink);
+        }
+        .box-pink h4 { color: var(--dark); margin: 0 0 8px 0; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        /*.box-pink h4::before { content: '⚡'; color: var(--pink); }
+        
+        /* The "Blue" Box - for Info, Success, Pro-tips */
+        .box-blue { 
+            background: var(--bg-blue-muted); 
+            padding: 24px; 
+            border-radius: 12px; 
+            margin: 24px 0; 
+            border-left: 4px solid var(--blue);
+        }
+        .box-blue h4 { color: var(--dark); margin: 0 0 8px 0; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        /*.box-blue h4::before { content: '💎'; color: var(--blue); }
+
+        /* Quote */
+        .quote { 
+            font-size: 18px; 
+            font-style: italic; 
+            color: var(--dark); 
+            border-left: 4px solid var(--sky); 
+            padding-left: 20px; 
+            margin: 32px 0; 
+        }
+        .quote-author { font-size: 14px; color: var(--grey); font-style: normal; margin-top: 8px; font-weight: 500; }
+
+        /* Stats Grid */
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 24px 0; }
+        .stat-card { background: var(--bg-body); border-radius: 12px; padding: 16px; text-align: center; border: 1px solid #E5E7EB; }
+        .stat-val { font-size: 28px; font-weight: 700; color: var(--blue); line-height: 1.1; margin-bottom: 4px; }
+        .stat-lbl { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--grey); }
+
+        /* CHECKLIST */
+        .checklist { 
+            background: var(--bg-card); 
+            padding: 32px; 
+            border-radius: var(--radius); 
+            margin-top: 40px; 
+            box-shadow: var(--shadow); 
+            border: 2px solid var(--bg-blue-muted);
+        }
+        .chk-header { flex: 1; }
+        .chk-title { font-size: 24px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+        .chk-desc { font-size: 14px; margin-bottom: 24px; }
+        
+        .chk-group-title { 
+            font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--pink); font-weight: 700; 
+            margin: 24px 0 12px 0; 
+        }
+        
+        .chk-item { 
+            display: flex; gap: 16px; padding: 12px 0; 
+            border-bottom: 1px solid #F3F4F6; cursor: pointer; 
+            transition: all 0.2s; 
+        }
+        .chk-item:hover { opacity: 0.8; }
+        .chk-item:last-child { border-bottom: none; }
+        
+        .checkbox { 
+            width: 22px; height: 22px; 
+            border: 2px solid var(--grey); border-radius: 6px; 
+            flex-shrink: 0; margin-top: 2px; position: relative;
+            transition: all 0.2s;
+        }
+        .chk-item.checked .checkbox { background: var(--blue); border-color: var(--blue); }
+        .chk-item.checked .checkbox::after { 
+            content: ''; position: absolute; left: 6px; top: 2px; width: 5px; height: 10px; 
+            border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); 
+        }
+        .chk-text strong { display: block; font-size: 15px; color: var(--dark); transition: color 0.2s; }
+        .chk-item.checked .chk-text strong { color: var(--grey); text-decoration: line-through; }
+        .chk-text span { font-size: 13px; color: var(--grey); }
+
+        /* Footer */
+        .footer { text-align: center; padding: 40px 0; margin-top: 20px; border-top: 1px solid #E5E7EB; }
+        .footer-logo { font-size: 16px; font-weight: 700; color: var(--blue); text-decoration: none; display: inline-block; margin-bottom: 8px; }
+        .footer-logo:hover { color: var(--pink); }
+        .footer-time { background: var(--bg-body); display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; color: var(--dark); border: 1px solid #E5E7EB; }
+
+        @media (max-width: 600px) {
+            .header { padding: 24px; text-align: left; }
+            .header-title { font-size: 24px; }
+            .section-header { padding: 16px; }
+            .section-icon { width: 36px; height: 36px; font-size: 18px; margin-right: 12px; }
+            .section-content { padding: 0 16px 24px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-pre">Интерактивный конспект</div>
+            <h1 class="header-title">Как оформить списание товаров на OZON через «Мой склад»</h1>
+            <div class="header-sub">Пошаговая инструкция по работе с отчетами о списаниях и их корректной загрузке в учётную систему.</div>
+            <div class="tags">
+                <span class="tag">#OZON</span>
+                <span class="tag">#МойСклад</span>
+                <span class="tag">#СписаниеТоваров</span>
+                <span class="tag">#Отчетность</span>
+            </div>
+        </header>
+
+        <!-- ЦИКЛ СЕКЦИЙ (Повторяй этот блок) -->
+        <section class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">🔍</div>
+                <h2 class="section-title">Поиск и скачивание отчета о списаниях на OZON</h2>
+                <div class="section-toggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+            <div class="section-content">
+                <p>Первым шагом в процессе корректного списания товаров является получение официального отчета от OZON. Не имеет значения, в каком разделе личного кабинета вы находитесь (FBO или FBS), так как информация о списанных товарах дублируется.</p>
+                <ol>
+                    <li>Перейдите в раздел «<strong>Списанные товары</strong>».</li>
+                    <li>Найдите кнопку «<strong>Документы по списаниям</strong>». Здесь собраны все официальные акты, выставляемые OZON за каждый месяц (обычно последним числом месяца).</li>
+                    <li>Скачайте необходимый документ за нужный месяц (например, за февраль).</li>
+                </ol>
+                <div class="box-blue">
+                    <h4> Важно: Единый источник</h4>
+                    <p>OZON предоставляет единый документ по списаниям, который охватывает все операции, независимо от схемы работы (FBO/FBS). Это упрощает процесс, так как не нужно искать несколько отчетов.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">🛒</div>
+                <h2 class="section-title">Создание отчета комиссионера в «Мой склад»</h2>
+                <div class="section-toggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+            <div class="section-content">
+                <p>Списание товаров в системе «Мой склад» будет производиться через механизм «Отчет комиссионера», но с важными нюансами, поскольку это не продажа, а именно списание себестоимости.</p>
+                <ol>
+                    <li>Перейдите в раздел «<strong>Продажи</strong>» → «<strong>Отчеты комиссионера</strong>».</li>
+                    <li>Создайте новый документ: «<strong>Полученный отчет комиссионера</strong>».</li>
+                    <li><strong>Дата документа</strong>: Укажите последнее число месяца, за который производится списание (например, 28 февраля).</li>
+                    <li><strong>Период</strong>: Установите соответствующий месяц.</li>
+                    <li><strong>Контрагент</strong>: Выберите «Озон – интернет-решение».</li>
+                    <li><strong>Договор</strong>: Выберите соответствующий договор с OZON.</li>
+                    <li><strong>Входящий номер</strong>: Поскольку OZON не всегда указывает входящий номер в документах о списании, достаточно указать дату входящего номера (например, 28 февраля).</li>
+                    <li><strong>Проект</strong>: Обязательно выберите «<strong>Списание ОЗОН</strong>». Это критически важно для дальнейшего анализа и фильтрации списаний.</li>
+                    <li><strong>Канал продаж</strong>: В большинстве случаев списания происходят по FBO. Можно выбрать «FBO Ozon», чтобы не усложнять процесс разделения.</li>
+                </ol>
+                <div class="box-pink">
+                    <h4> Ошибка: Неверный проект</h4>
+                    <p>Если не указать проект «Списание ОЗОН», то в будущем будет крайне сложно отделить эти списания от обычных продаж или других операций, что может привести к искажению финансовой отчетности.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">📊</div>
+                <h2 class="section-title">Подготовка и импорт данных о списаниях</h2>
+                <div class="section-toggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+            <div class="section-content">
+                <p>Для массовой загрузки данных о списанных товарах в «Мой склад» необходимо подготовить специальный шаблон.</p>
+                <ol>
+                    <li>Откройте подготовленный шаблон для загрузки в «Мой склад» (обычно это Excel-файл).</li>
+                    <li>Из скачанного с OZON отчета скопируйте столбец со <strong>штрихкодами</strong> и вставьте его в соответствующее поле шаблона.</li>
+                    <li>Для каждого штрихкода укажите <strong>количество</strong> списанных единиц. В большинстве случаев это будет «1», так как OZON часто списывает товары поштучно.</li>
+                    <li><strong>Цену и комиссию</strong> оставляем пустыми. Это не продажи, а списание себестоимости, поэтому эти поля неактуальны.</li>
+                    <li>Сохраните подготовленный файл-шаблон.</li>
+                    <li>Вернитесь в «Мой склад» в созданный ранее отчет комиссионера.</li>
+                    <li>Нажмите кнопку «<strong>Загрузить</strong>» и выберите ваш подготовленный файл.</li>
+                    <li>После успешной загрузки вы увидите список списанных товаров. Нажмите «<strong>Импорт</strong>» для завершения процесса.</li>
+                </ol>
+                <div class="quote">
+                    «Нам нужно просто списать себестоимость данных товаров. Наиболее просто списать это через отчет комиссионных продаж, чтобы не искать каждый и не подтягивать себестоимость.»
+                    <div class="quote-author">— Спикер</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">✅</div>
+                <h2 class="section-title">Проверка и проведение документа</h2>
+                <div class="section-toggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+            <div class="section-content">
+                <p>После импорта данных важно убедиться в корректности операции.</p>
+                <ol>
+                    <li>Убедитесь, что все импортированные товары существуют на остатках в «Мой склад» и не подсвечиваются красным (что означало бы отсутствие товара или ошибки).</li>
+                    <li>Проверьте, что в документе указаны «<strong>Списание Озон</strong>» и «<strong>FBO Ozon</strong>».</li>
+                    <li>Сохраните и проведите документ.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ЧЕК-ЛИСТ -->
+        <div class="checklist">
+            <div class="chk-header">
+                <div class="chk-title">🚀 Чек-лист внедрения</div>
+                <div class="chk-desc">Отмечайте выполненные пункты, прогресс сохранится</div>
+            </div>
+
+            <!-- Группа 1 -->
+            <div class="chk-group-title">Подготовка отчета OZON</div>
+            <div class="chk-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="chk-text">
+                    <strong>Скачать отчет о списаниях с OZON</strong>
+                    <span>Перейдите в раздел "Списанные товары" и загрузите официальный документ за нужный месяц.</span>
+                </div>
+            </div>
+            
+            <!-- Группа 2 -->
+            <div class="chk-group-title">Создание документа в «Мой склад»</div>
+            <div class="chk-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="chk-text">
+                    <strong>Создать новый "Полученный отчет комиссионера"</strong>
+                    <span>Укажите дату (последнее число месяца), период, контрагента "Озон" и договор.</span>
+                </div>
+            </div>
+            <div class="chk-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="chk-text">
+                    <strong>Заполнить ключевые поля отчета</strong>
+                    <span>Установите входящую дату (если нет номера), выберите проект "Списание ОЗОН" и канал продаж "ФБО".</span>
+                </div>
+            </div>
+
+            <!-- Группа 3 -->
+            <div class="chk-group-title">Импорт данных</div>
+            <div class="chk-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="chk-text">
+                    <strong>Подготовить шаблон для импорта</strong>
+                    <span>Скопируйте штрихкоды и количество (обычно 1) из отчета OZON в Excel-шаблон. Цену и комиссию не заполнять.</span>
+                </div>
+            </div>
+            <div class="chk-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="chk-text">
+                    <strong>Импортировать данные в отчет комиссионера</strong>
+                    <span>Загрузите подготовленный файл в созданный документ в "Мой склад" и подтвердите импорт.</span>
+                </div>
+            </div>
+
+            <!-- Группа 4 -->
+            <div class="chk-group-title">Завершение и фиксация</div>
+            <div class="chk-item" onclick="toggleCheck(this)">
+                <div class="checkbox"></div>
+                <div class="chk-text">
+                    <strong>Проверить и провести документ списания</strong>
+                    <span>Убедитесь в отсутствии ошибок и сохраните проведенный документ в "Мой склад".</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 24px; height: 6px; background: #F3F4F6; border-radius: 3px; overflow: hidden;">
+                <div id="progress" style="width: 0%; height: 100%; background: var(--blue); transition: width 0.3s;"></div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div style="margin-bottom: 16px;">
+                <span class="footer-time">⏳ Сэкономлено времени на изучение: ~8 мин</span>
+            </div>
+            <div>
+                <a href="https://t.me/BukvitsaAI_bot?start=449549508" target="_blank" class="footer-logo">Создано в Буквица</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // SMART LOGIC
+        function toggleSection(header) {
+            const section = header.closest('.section');
+            const content = section.querySelector('.section-content');
+            section.classList.toggle('collapsed');
+            
+            if (!section.classList.contains('collapsed')) {
+                content.style.maxHeight = content.scrollHeight + "px";
+            } else {
+                content.style.maxHeight = null;
+            }
+        }
+
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+            updateProgress();
+            saveChecklistState();
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.chk-item').length;
+            const checked = document.querySelectorAll('.chk-item.checked').length;
+            const pct = total ? (checked / total) * 100 : 0;
+            document.getElementById('progress').style.width = pct + '%';
+        }
+
+        function saveChecklistState() {
+            const checklistItems = document.querySelectorAll('.chk-item');
+            const state = [];
+            checklistItems.forEach((item, index) => {
+                state.push(item.classList.contains('checked'));
+            });
+            localStorage.setItem('checklistState', JSON.stringify(state));
+        }
+
+        function loadChecklistState() {
+            const savedState = localStorage.getItem('checklistState');
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                const checklistItems = document.querySelectorAll('.chk-item');
+                checklistItems.forEach((item, index) => {
+                    if (state[index]) {
+                        item.classList.add('checked');
+                    }
+                });
+            }
+            updateProgress();
+        }
+
+        // Init heights
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.section-content').forEach(el => {
+                el.style.maxHeight = el.scrollHeight + "px";
+            });
+            loadChecklistState(); // Загружаем состояние чек-листа при загрузке страницы
+        });
+        window.addEventListener('resize', () => {
+             document.querySelectorAll('.section:not(.collapsed) .section-content').forEach(el => {
+                el.style.maxHeight = el.scrollHeight + "px";
+            });
+        });
+    </script>
+</body>
+</html>
